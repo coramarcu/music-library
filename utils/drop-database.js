@@ -1,4 +1,4 @@
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 const path = require('path');
 
 require('dotenv').config({
@@ -7,11 +7,18 @@ require('dotenv').config({
 
 const { DB_PASSWORD, DB_NAME, DB_USER, DB_HOST, DB_PORT } = process.env;
 
-const connection = mysql.createConnection({
+const setUpDatabase = async () => {
+  const connection = await mysql.createConnection({
     host: DB_HOST,
     user: DB_USER,
     password: DB_PASSWORD,
     port: DB_PORT,
   });
+
+  await connection.query(`DROP DATABASE ${DB_NAME}`);
+  connection.end();
+}
+
+setUpDatabase();
   
-  connection.query(`DROP DATABASE ${DB_NAME}`, () => connection.end());
+  

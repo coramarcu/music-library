@@ -1,5 +1,4 @@
 const express = require('express');
-const { get } = require('express/lib/response');
 const artistRouter = require('./routes/artist');
 
 const app = express();
